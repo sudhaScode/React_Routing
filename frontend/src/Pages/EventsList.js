@@ -1,5 +1,5 @@
-import { useLoaderData } from "react-router-dom";
-import EventsNavigation from "../components/EventsNavigation";
+//import EventsNavigation from "../components/EventsNavigation";
+import { Link } from 'react-router-dom';
 import classes from './EventsList.module.css'
 
 
@@ -9,10 +9,10 @@ import classes from './EventsList.module.css'
     {id: "e3", event: "Friday special"}
 ]; */
 
-function EventsList(){
-  const events = useLoaderData();
+function EventsList({events}){
+
 // {PRODUCTS.map((event)=>(<li key={event.id}><Link to ={`eventDetails/${event.id}`}>{event.event}</Link></li>))}
-console.log(events);
+//console.log(events);
 
   return (
        <div className={classes.events}>
@@ -20,13 +20,13 @@ console.log(events);
           <ul className={classes.list}>
             {events &&events.map((event) => (
               <li key={event.id} className={classes.item}>
-                <a href={`events/eventDetails/${event.id}`}>
+                <Link to={event.id}>
                   <img src={event.image} alt={event.title} />
                   <div className={classes.content}>
                     <h2>{event.title}</h2>
                     <time>{event.date}</time>
                   </div>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

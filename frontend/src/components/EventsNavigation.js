@@ -2,15 +2,15 @@ import classes from './EventsNavigation.module.css';
 import { NavLink } from 'react-router-dom';
 
 function EventsNavigation() {
-  return (
+  return (  
     <header className={classes.header}>
       <nav>
         <ul className={classes.list}>
         <li>
-            <NavLink to = "new" className={({isActive})=>isActive? classes.active:undefined}>Add Event</NavLink>
+            <NavLink to = "" className={({isActive})=>isActive? classes.active:undefined} end>All Events</NavLink>
           </li>
           <li>
-            <NavLink to = "id/edit" className={({isActive})=>isActive? classes.active:undefined}>Edit Event</NavLink>
+            <NavLink to = "new" className={({isActive})=>isActive? classes.active:undefined}>New Event</NavLink>
           </li>
         </ul>
       </nav>

@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+//import { useState, useEffect } from "react";
 import EventsList from "./EventsList";
+import { useLoaderData } from "react-router-dom";
 
 
 function EventsPage(){
@@ -31,11 +32,12 @@ useEffect(()=>{
     }
     fetchEvents();
  }, []);*/
+ const data = useLoaderData();
+ const events = data.events;
+ 
  return(
     <>
-    
-    <EventsList />
-
+    {events&&<EventsList events={events}/>}
     </>
  );
 
@@ -46,5 +48,18 @@ useEffect(()=>{
 
     </div> 
     {!loading && <EventsList events = {fetchedEvents}/>}*/
-
 export default EventsPage;
+
+export async function loader(){
+    const response = await fetch('http://localhost:8080/events');
+    
+    if(!response.ok){
+     // return {isErorr: true, message:"Couldn't"}
+     throw new Response(JSON.stringify({title: "error", message:"Couldn't load data"}),
+     {status: 500})
+    }
+    else{
+      //  const resData = await response.json();
+        return response;
+    }
+}

@@ -1,15 +1,17 @@
 // Challenge / Exercise
 
 import EditEventPage from "./Pages/EditEventPage";
-import EventDetailPage from "./Pages/EventDetailPage";
+import EventDetailPage, {loader as useEventLoad, action as deleteAction} from "./Pages/EventDetailPage";
 //import EventsList from "./Pages/EventsList";
-import EventsPage from "./Pages/Events";
+import  EventsPage, {loader as eventsLoader} from "./Pages/Events";
 import HomePage from "./Pages/HomePage";
-import NewEventPage from "./Pages/NewEventPage";
+import NewEventPage, {action as newEventAction} from "./Pages/NewEventPage";
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import RootLayout from "./RootLayout";
 import  ErrorPage from "./ErrorPage";
 import EventRoot from "./EventRoot";
+import { action as updateEventAction} from './components/EventForm';
+import NewsletterPage, {action as newsletterAction} from "./Pages/NewsLetter";
 
 // 1. Add five new (dummy) page components (content can be simple <h1> elements)
 //    - HomePage
@@ -38,24 +40,31 @@ const router = createBrowserRouter(
     errorElement: <ErrorPage/>,
     children:[
       //{path:'', element: <HomePage/>},
-      {index:true, element: <HomePage/>},
-      {path: 'events', element:<EventRoot/>, 
+      {index:true, element: <HomePage/>,},
+      {path: 'events', element:<EventRoot/>,
        children:[
-           {index:true, element: <EventsPage/>, loader: async ()=>{
-            const response = await fetch('http://localhost:8080/events');
-        
-        if(!response.ok){
-          //
-        }
-        else{
-            const resData = await response.json();
-            return resData.events;
-        }
-           }},
-           {path: 'eventDetails/:id', element:<EventDetailPage/>},  
-           {path:'new', element:<NewEventPage/>},  
-           {path: ':id/edit', element:<EditEventPage/>}]}]
-    }]);
+           {index:true, 
+            element: <EventsPage/>, 
+            loader: eventsLoader, 
+           },
+           {path: ':eventid', 
+            id:"event-detail",
+            loader: useEventLoad, 
+            children:[
+              {index: true, element: <EventDetailPage/>, action: deleteAction  },
+              {path: 'edit', element:<EditEventPage/>, action: updateEventAction}
+            ]
+          },  
+           {path:'new', element:<NewEventPage/>, action: updateEventAction}, 
+           ]},
+           {
+            path: 'newsletter',
+            element: <NewsletterPage/>,
+            action: newsletterAction,
+          }, 
+          ],
+    }
+  ]);
 
 function App() {
   return <RouterProvider router= {router}/>
